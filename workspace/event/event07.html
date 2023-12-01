@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>첨부파일 썸네일</title>
+  <style>
+    div.wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 90px;
+      height: 90px;
+      margin: 0 auto;
+    }
+
+    div.image {
+      cursor: pointer;
+      background-image: url('./add.png');
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      width: 70px;
+      height: 70px;
+    }
+
+    div.cancel {
+      display: none;
+      cursor: pointer;
+      position: absolute;
+      background-image: url('./cancel.png');
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      margin: 0 auto;
+      width: 20px;
+      height: 20px;
+      right: 15px;
+      top: 0;
+    }
+
+    input[type='file']{
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <form action="">
+    <div class="wrap">
+      <label for="attach">
+        <div class="image"></div>
+      </label>
+      <div class="cancel"></div>
+    </div>
+    <input type="file" id="attach">
+  </form>
+</body>
+<script>
+  const input = document.getElementById("attach");
+  const thumbnail = document.querySelector("div.image");
+  const cancel = document.querySelector("div.cancel");
+
+  input.addEventListener("change", (e) => {
+    const reader = new FileReader();
+
+    reader.readAsDataURL(e.target.files[0])
+
+    reader.onload = (e) => {
+      const path = e.target.result
+
+      cancel.style.display = 'block';
+
+      if(path.includes('image')){
+        thumbnail.style.backgroundImage = `url('${e.target.result}')`;
+      }else{
+        thumbnail.style.backgroundImage = `url('attach.png')`;
+      }
+    };
+  });
+
+  cancel.addEventListener("click", (e) => {
+    input.value = "";
+    thumbnail.style.backgroundImage = `url('add.png')`;
+    cancel.style.display = 'none';
+  });
+</script>
+</html>
